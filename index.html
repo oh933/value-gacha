@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valueガチャ</title>
+    <style>
+        :root {
+            --bg-gradient-light: linear-gradient(135deg, #1E88E5, #43A047);
+            --bg-gradient-dark: linear-gradient(135deg, #0D47A1, #1B5E20);
+            --text-color-light: #FFFFFF;
+            --text-color-dark: #E0E0E0;
+            --container-bg-light: rgba(255, 255, 255, 0.15);
+            --container-bg-dark: rgba(0, 0, 0, 0.25);
+            --button-bg: #00838F;
+            --button-hover-bg: #00ACC1;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            text-align: center;
+            background: var(--bg-gradient-light);
+            color: var(--text-color-light);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.5s ease;
+        }
+        body.dark-mode {
+            background: var(--bg-gradient-dark);
+            color: var(--text-color-dark);
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px;
+            padding: 30px;
+            background-color: var(--container-bg-light);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
+        }
+        body.dark-mode .container {
+            background-color: var(--container-bg-dark);
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        p {
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        button {
+            background-color: var(--button-bg);
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            margin: 20px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            background-color: var(--button-hover-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #result {
+            margin-top: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFFFFF;
+            padding: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        #mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            p {
+                font-size: 1em;
+            }
+            button {
+                font-size: 16px;
+                padding: 12px 24px;
+            }
+            #result {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="mode-toggle">🌓</button>
+    <div class="container">
+        <h1>Valueガチャ</h1>
+        <p>ボタンを押して、今日のValueを引き出しましょう。<br>日々の行動の指針として活用してください。</p>
+        <button onclick="drawGacha()">Valueを引く</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const values = [
+            "世の中のワクワクを探求する",
+            "行動することの大切さ",
+            "しなやかな強さを持つ",
+            "常に学び、個性を磨く",
+            "「速さ」は価値をうむ",
+            "決めることを決める",
+            "可能性を信じる",
+            "他社へ貢献する"
+        ];
+
+        const valueColors = [
+            "#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A",
+            "#98D8C8", "#F67280", "#C06C84", "#6C5B7B"
+        ];
+
+        function drawGacha() {
+            const randomIndex = Math.floor(Math.random() * values.length);
+            const result = values[randomIndex];
+            const resultElement = document.getElementById("result");
+            
+            resultElement.style.opacity = "0";
+            resultElement.style.transform = "translateY(20px)";
+            
+            setTimeout(() => {
+                resultElement.textContent = result;
+                resultElement.style.opacity = "1";
+                resultElement.style.transform = "translateY(0)";
+                resultElement.style.backgroundColor = valueColors[randomIndex];
+            }, 200);
+        }
+
+        const modeToggle = document.getElementById('mode-toggle');
+        modeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        function adjustFontSize() {
+            const width = window.innerWidth;
+            const fontSize = Math.max(16, Math.min(24, width / 30));
+            document.body.style.fontSize = `${fontSize}px`;
+        }
+
+        window.addEventListener('resize', adjustFontSize);
+        adjustFontSize();
+    </script>
+</body>
+</html>
